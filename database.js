@@ -12,7 +12,7 @@ const database = mysql.createPool({
 
 database
 
-  .query("select * from movies")
+  .query("select *,NULL AS hashedPassword from users")
 
   .then(([users]) => {
     console.log(users);

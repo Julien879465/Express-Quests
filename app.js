@@ -11,7 +11,7 @@ const port = process.env.APP_PORT ?? 5000;
 const welcome = (req, res) => {
   res.send("Welcome to my favourite movie list");
 };
-const { hashPassword } = require("./auth.js");
+const { hashPassword, verifyPassword } = require("./auth");
 app.get("/", welcome);
 
 const movieHandlers = require("./movieHandlers");
@@ -29,6 +29,23 @@ app.get("/api/users/:id", userHandlers.getUserById);
 app.post("/api/users", hashPassword, userHandlers.postUser);
 app.put("/api/users/:id", hashPassword, userHandlers.updateUser);
 app.delete("/api/users/:id", userHandlers.deleteUser);
+
+const isItDwight = (req, res) => {
+  if (
+    req.body.email === "dwight@theoffice.com" &&
+    req.body.password === "123456"
+  ) {
+    res.send("Credentials are valid");
+  } else {
+    res.sendStatus(401);
+  }
+};
+
+app.post(
+  "/api/login",
+  userHandlers.getUserByEmailWithPasswordAndPassToNext,
+  verifyPassword
+);
 
 app.listen(port, (err) => {
   if (err) {
