@@ -79,37 +79,37 @@ const updateMovie = (req, res) => {
     .query(
       "UPDATE movies SET title = ?, director = ?, year = ?, color = ?, duration = ? WHERE id = ?",
       [title, director, year, color, duration, id]
-      )
-    .then(([result])=>{
-      if (result.affectedRows === 0){
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
         res.status(404).send("Not Found");
-      }else{
+      } else {
         res.sendStatus(204);
       }
     })
     .catch((err) => {
-      console.error(err)
-      res.status(500).send("Error editing the movie")
+      console.error(err);
+      res.status(500).send("Error editing the movie");
+    });
+};
+
+const deleteMovie = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query("DELETE FROM movies WHERE id = ?", [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.sendStatus(204);
+      }
     })
-}
-
-  const deleteMovie =(req, res) => {
-     const id = parseInt(req.params.id);
-
-     database
-       .query("DELETE FROM movies WHERE id = ?", [id])
-       .then(([result]) => {
-         if (result.affectedRows === 0) {
-           res.status(404).send("Not Found");
-         } else {
-           res.sendStatus(204);
-         }
-       })
-       .catch((err) => {
-         console.error(err);
-         res.status(500).send("Error deleting the movie");
-       });
-  }
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error deleting the movie");
+    });
+};
 
 module.exports = {
   getMovies,
