@@ -4,11 +4,11 @@ const getUsers = (req, res) => {
   const initialSql = "select *, NULL AS hashedPassword from users";
   const where = [];
 
-  if (req.query.city != null) {
+  if (req.qruery.city != null) {
     where.push({
       column: "city",
       value: req.query.city,
-      operator: "=",
+      operato: "=",
     });
   }
   if (req.query.language != null) {
